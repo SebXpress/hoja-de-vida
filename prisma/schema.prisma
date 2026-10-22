@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  FUNCIONARIO
+  TALENTO_HUMANO
+  ADMIN
+}
+
+enum TipoFuncionario {
+  DOCENTE
+  ADMINISTRATIVO
+  DIRECTIVO
+}
+
+enum EstadoValidacion {
+  PENDIENTE
+  VALIDADO
+  RECHAZADO
+}
+
+enum NivelFormacion {
+  TECNICO
+  TERCER_NIVEL
+  ESPECIALIZACION
+  MAESTRIA
+  DOCTORADO
+}
+
+enum OrigenRegistro {
+  MANUAL
+  BUS_DATOS
+}
+
+model Usuario {
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
+  passwordHash String
+  rol          Rol          @default(FUNCIONARIO)
+  activo       Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  funcionario  Funcionario?
+}
+
+model Funcionario {
+  id              Int                  @id @default(autoincrement())
+  usuarioId       Int                  @unique
+  usuario         Usuario              @relation(fields: [usuarioId], references: [id])
+  nombres         String
+  apellidos       String
+  cedula          String               @unique
+  telefono        String?
+  direccion       String?
+  tipoFuncionario TipoFuncionario
+  cargo           String?
+  departamento    String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  capacitaciones  Capacitacion[]
+  formaciones     FormacionAcademica[]
+}
+
+model Capacitacion {
+  id                  Int              @id @default(autoincrement())
+  funcionarioId       Int
+  funcionario         Funcionario      @relation(fields: [funcionarioId], references: [id], onDelete: Cascade)
+  nombre              String
+  institucion         String
+  fechaInicio         DateTime
+  fechaFin            DateTime
+  horas               Int
+  evidenciaUrl        String
+  estado              EstadoValidacion @default(PENDIENTE)
+  observacionRevision String?
+  revisadoPorId       Int?
+  revisadoEn          DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  @@index([funcionarioId])
+  @@index([estado])
+}
+
+model FormacionAcademica {
+  id                     Int              @id @default(autoincrement())
+  funcionarioId          Int
+  funcionario            Funcionario      @relation(fields: [funcionarioId], references: [id], onDelete: Cascade)
+  nivel                  NivelFormacion
+  titulo                 String
+  institucion            String
+  pais                   String
+  fechaObtencion         DateTime
+  numeroRegistroSenescyt String?
+  origen                 OrigenRegistro   @default(MANUAL)
+  evidenciaUrl           String?
+  estado                 EstadoValidacion @default(PENDIENTE)
+  observacionRevision    String?
+  revisadoPorId          Int?
+  revisadoEn             DateTime?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  @@index([funcionarioId])
+  @@index([estado])
+}
