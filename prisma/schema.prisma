@@ -109,3 +109,9 @@ model FormacionAcademica {
   @@index([funcionarioId])
   @@index([estado])
 }
+
+model PerfilConfiguracion {
+  tipoFuncionario TipoFuncionario @id
+  secciones       Json
+  updatedAt       DateTime @default(now()) @updatedAt
+}
