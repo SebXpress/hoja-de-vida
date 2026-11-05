@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Hoja de vida institucional</title><link rel="stylesheet" href="/app/styles.css"><script src="/app/sections.js" defer></script><script src="/app/app.js" defer></script></head>
+<body><main class="shell">
+<header><div class="brand">HV <span>Gestión institucional</span></div><a href="/api/docs">Documentación API ↗</a></header>
+<section class="intro"><p class="eyebrow">TU TRAYECTORIA, EN UN SOLO LUGAR</p><h1>Hoja de vida institucional</h1><p>Consulta tu información y las secciones habilitadas para tu perfil.</p></section>
+<p id="status" role="status" aria-live="polite"></p>
+<section id="auth" class="card"><h2 id="auth-title">Ingresa a tu cuenta</h2><form id="login-form">
+<label>Correo institucional<input type="email" name="email" required autocomplete="username" maxlength="254"></label>
+<label>Contraseña<input type="password" name="password" required minlength="8" maxlength="64" autocomplete="current-password"></label>
+<fieldset id="registration" hidden disabled><legend>Datos de registro</legend>
+<label>Nombres<input name="nombres" maxlength="100" autocomplete="given-name"></label>
+<label>Apellidos<input name="apellidos" maxlength="100" autocomplete="family-name"></label>
+<label>Cédula<input name="cedula" pattern="[0-9]{10}" inputmode="numeric" maxlength="10"></label>
+<label>Tipo de funcionario<select name="tipoFuncionario"><option>DOCENTE</option><option>ADMINISTRATIVO</option><option>DIRECTIVO</option></select></label>
+</fieldset><button id="submit-auth" type="submit">Ingresar</button><button id="toggle-register" class="secondary" type="button">Crear una cuenta</button>
+</form></section>
+<section id="workspace" hidden>
+<div class="toolbar"><p id="identity"></p><div><button id="refresh" class="secondary">Actualizar secciones</button><button id="logout" class="secondary">Cerrar sesión</button></div></div>
+<nav id="tabs" aria-label="Secciones de hoja de vida"></nav>
+<section class="card" id="content" aria-busy="false"></section>
+<section class="card" id="admin" hidden><p class="eyebrow">GESTIÓN DE PERFILES</p><h2>Configurar secciones</h2><p>Los cambios se aplican al actualizar las secciones. La información guardada se conserva.</p>
+<form id="config-form"><label>Perfil<select id="config-type"><option>DOCENTE</option><option>ADMINISTRATIVO</option><option>DIRECTIVO</option></select></label><div id="rules"></div><button type="submit">Guardar configuración</button></form>
+</section></section>
+<footer>Gestor de Hoja de Vida Institucional · ESPE</footer>
+</main></body></html>
